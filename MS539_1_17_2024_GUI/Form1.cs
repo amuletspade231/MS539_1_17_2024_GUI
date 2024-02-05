@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using Newtonsoft.Json;
 
 
 
@@ -51,13 +54,15 @@ namespace SV_Crop_Calendar
             InitializeComponent();
         }
 
-        private void cropCLB_SelectedIndexChanged(object sender, EventArgs e)
+        private void cropCLB_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             // Get the currently selected item in the ListBox.
-            int crop = cropCLB.SelectedIndex;
+            int crop = e.Index;
+
+            Console.WriteLine(e);
 
             //If checked, check if it's ready to harvest
-            if (cropCLB.GetItemChecked(crop))
+            if (!cropCLB.GetItemChecked(crop))
             {
                 checkHarvestDates(crop);
             }
@@ -253,5 +258,80 @@ namespace SV_Crop_Calendar
                 growthIndex = 1.25;
             }
         }
+
+        // When user clicks "save" the inputs from the current season will be saved
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<State> state = new List<State>();
+            state.Add(new State()
+            {
+                growthIndex = growthIndex,
+                cropHarvestDates = cropHarvestDates,
+                selectedCrops = cropCLB.CheckedIndices.Cast<int>().ToList()
+        });
+
+            JsonSerializer serializer = new JsonSerializer();
+            string json = JsonConvert.SerializeObject(state.ToArray());
+            File.WriteAllText("spring.json", json);
+
+        }
+
+        // When user clicks on "Spring" the inputs from their last Spring session will be loaded
+        private void springToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (StreamReader file = new StreamReader("spring.json"))
+            {
+                string json = file.ReadToEnd();
+                List<State> state = JsonConvert.DeserializeObject<List<State>>(json);
+                
+                // load the fertilizer input
+                switch (state[0].growthIndex) { 
+                    case 1.1: { speedGroRB.PerformClick() ; break; }
+                    case 1.25: {  deluxeSGRB.PerformClick() ; break; }
+                    default: { noneRB.PerformClick(); break; }
+                }
+
+                // load the crop selections
+                for (int index = 0; index < cropCLB.Items.Count; index++)
+                {
+                    cropCLB.SetItemChecked(index, false);
+                }
+                foreach (int index in state[0].selectedCrops)
+                {
+                    cropCLB.SetItemChecked(index, true);
+                }
+
+            };
+        }
+
+        private void randomBtn_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+
+            // randomize fertilizer choice
+            int fert = rnd.Next(0, 3);
+            switch(fert)
+            {
+                case 0: { noneRB.PerformClick(); break; }
+                case 1: { speedGroRB.PerformClick(); break; }
+                case 2: { deluxeSGRB.PerformClick(); break; }
+                default : { noneRB.PerformClick(); break; };
+            }
+
+            // randomize crop selections
+            for (int index = 0; index < cropCLB.Items.Count; index++)
+            {
+                int check = rnd.Next(0, 2);
+                if (check == 0) { cropCLB.SetItemChecked(index, true); }
+                else { cropCLB.SetItemChecked(index, false); }
+            }
+
+        }
+    }
+    public class State
+    {
+        public double growthIndex { get; set; }
+        public List<List<DateTime>> cropHarvestDates { get; set; }
+        public List<int> selectedCrops { get; set; }
     }
 }
