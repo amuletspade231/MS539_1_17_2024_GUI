@@ -135,7 +135,7 @@ namespace SV_Crop_Calendar
                 // Check selected date for each crop that was checked in the crop checklist
                 foreach (int crop in cropCLB.CheckedIndices)
                 {
-                    if (cropStatusPanel.Controls[crop].Text == "Not planted")
+                    if (cropStatusPanel.Controls[crop].Text.Contains("Not planted"))
                     {
                         continue;
                     }
@@ -188,7 +188,7 @@ namespace SV_Crop_Calendar
                 // Check selected date for each crop that was checked in the crop checklist
                 foreach (int crop in cropCLB.CheckedIndices)
                 {
-                    if (cropStatusPanel.Controls[crop].Text == "Not planted")
+                    if (cropStatusPanel.Controls[crop].Text.Equals("Not planted"))
                     {
                         continue;
                     }
@@ -243,7 +243,7 @@ namespace SV_Crop_Calendar
                 // Check selected date for each crop that was checked in the crop checklist
                 foreach (int crop in cropCLB.CheckedIndices)
                 {
-                    if (cropStatusPanel.Controls[crop].Text == "Not planted")
+                    if (cropStatusPanel.Controls[crop].Text.EndsWith("Not planted"))
                     {
                         continue;
                     }
@@ -253,5 +253,57 @@ namespace SV_Crop_Calendar
                 growthIndex = 1.25;
             }
         }
+
+        private void randomBtn_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+
+            // randomize fertilizer choice
+            int fert = rnd.Next(0, 3);
+            switch(fert)
+            {
+                case 0: { noneRB.PerformClick(); break; }
+                case 1: { speedGroRB.PerformClick(); break; }
+                case 2: { deluxeSGRB.PerformClick(); break; }
+                default : { noneRB.PerformClick(); break; };
+            }
+
+            // randomize crop selections
+            for (int index = 0; index < cropCLB.Items.Count; index++)
+            {
+                int check = rnd.Next(0, 2);
+                if (check == 0) { cropCLB.SetItemChecked(index, true); }
+                else { cropCLB.SetItemChecked(index, false); }
+            }
+
+        }
+
+        private void crop_Click(object sender, EventArgs e)
+        {
+            // Get clicked picture box
+            PictureBox crop = sender as PictureBox;
+            if (crop == null) { return; }
+
+            // Set picture to selected crop in the crop CMB
+            var cropName = cropCLB.SelectedItem as String;
+            if (cropName == null) 
+            { 
+                crop.Image = null; 
+            } 
+            else
+            {
+                crop.Image = Image.FromFile("../" + cropName + ".png");
+            }
+            
+
+            // Add picture box index to list of indices for that crop
+            Console.WriteLine(cropPanel.Controls.Find(crop.Name, false)[0].Name);
+        }
+    }
+    public class State
+    {
+        public double growthIndex { get; set; }
+        public List<List<DateTime>> cropHarvestDates { get; set; }
+        public List<int> selectedCrops { get; set; }
     }
 }

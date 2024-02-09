@@ -5,3 +5,19 @@ Work Estimation: 4 hours
 1/21/2024 - 1.5 hour
 
 Total: 4 hours
+
+----------------------------------
+
+Work Estimation: 2 hours
+
+2/1 - 1.5 hr
+2/2 - 0.5 hr
+2/4 - 1.5 hr
+
+Total: 3.5 hr
+
+I took a lot longer than I thought because I spent time on an error that didn't actually exist.
+I also found out I had to redo how my program worked to fit my new features and that took some time as well.
+Next time I want to include time for refactoring and such.
+
+Work Estimation: 3 hours
