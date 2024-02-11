@@ -1,4 +1,4 @@
-﻿namespace SV_Crop_Calendar
+namespace SV_Crop_Calendar
 {
     partial class Form1
     {
