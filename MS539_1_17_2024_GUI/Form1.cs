@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using Newtonsoft.Json;
 
 
 
@@ -19,6 +22,8 @@ namespace SV_Crop_Calendar
         private double growthIndex = 1;
         // List of lists of dates to store the harvest dates of each crop
         private List<List<DateTime>> cropHarvestDates = Enumerable.Range(0, 4).Select(i => new List<DateTime>()).ToList();
+        // List of indices to store grid plots of each crop
+        private List<List<PictureBox>> cropPlots = Enumerable.Range(0, 4).Select(i => new List<PictureBox>()).ToList();
 
         public Form1()
         {
@@ -51,13 +56,13 @@ namespace SV_Crop_Calendar
             InitializeComponent();
         }
 
-        private void cropCLB_SelectedIndexChanged(object sender, EventArgs e)
+        private void cropCLB_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             // Get the currently selected item in the ListBox.
-            int crop = cropCLB.SelectedIndex;
+            int crop = e.Index;
 
             //If checked, check if it's ready to harvest
-            if (cropCLB.GetItemChecked(crop))
+            if (!cropCLB.GetItemChecked(crop))
             {
                 checkHarvestDates(crop);
             }
@@ -65,6 +70,7 @@ namespace SV_Crop_Calendar
             else
             {
                 cropStatusPanel.Controls[crop].Text = "Not planted";
+                clearCropGrid(crop);
             }
         }
 
@@ -72,7 +78,7 @@ namespace SV_Crop_Calendar
         private void seasonCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
             // Check selected date for each crop that was checked in the crop checklist
-            foreach (int crop in cropCLB.CheckedIndices) 
+            foreach (int crop in cropCLB.CheckedIndices)
             {
                 if (cropStatusPanel.Controls[crop].Text == "Not planted")
                 {
@@ -81,7 +87,7 @@ namespace SV_Crop_Calendar
                 checkHarvestDates(crop);
             }
         }
-        
+
         private void checkHarvestDates(int crop)
         {
             DateTime currDate = seasonCalendar.SelectionRange.Start;
@@ -97,7 +103,7 @@ namespace SV_Crop_Calendar
             }
 
         }
-        
+
         private void noneRB_CheckedChanged(object sender, EventArgs e)
         {
             if (growthIndex != 1)
@@ -254,18 +260,65 @@ namespace SV_Crop_Calendar
             }
         }
 
+        // When user clicks "save" the inputs from the current season will be saved
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<State> state = new List<State>();
+            state.Add(new State()
+            {
+                growthIndex = growthIndex,
+                cropHarvestDates = cropHarvestDates,
+                selectedCrops = cropCLB.CheckedIndices.Cast<int>().ToList()
+            });
+
+            JsonSerializer serializer = new JsonSerializer();
+            string json = JsonConvert.SerializeObject(state.ToArray());
+            File.WriteAllText("spring.json", json);
+
+        }
+
+        // When user clicks on "Spring" the inputs from their last Spring session will be loaded
+        private void springToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (StreamReader file = new StreamReader("spring.json"))
+            {
+                string json = file.ReadToEnd();
+                List<State> state = JsonConvert.DeserializeObject<List<State>>(json);
+
+                // load the fertilizer input
+                switch (state[0].growthIndex)
+                {
+                    case 1.1: { speedGroRB.PerformClick(); break; }
+                    case 1.25: { deluxeSGRB.PerformClick(); break; }
+                    default: { noneRB.PerformClick(); break; }
+                }
+
+                // load the crop selections
+                for (int index = 0; index < cropCLB.Items.Count; index++)
+                {
+                    cropCLB.SetItemChecked(index, false);
+                }
+                foreach (int index in state[0].selectedCrops)
+                {
+                    cropCLB.SetItemChecked(index, true);
+                }
+
+            };
+        }
+
+        // Randomize crop and fertilizer selections
         private void randomBtn_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
 
             // randomize fertilizer choice
             int fert = rnd.Next(0, 3);
-            switch(fert)
+            switch (fert)
             {
                 case 0: { noneRB.PerformClick(); break; }
                 case 1: { speedGroRB.PerformClick(); break; }
                 case 2: { deluxeSGRB.PerformClick(); break; }
-                default : { noneRB.PerformClick(); break; };
+                default: { noneRB.PerformClick(); break; };
             }
 
             // randomize crop selections
@@ -286,18 +339,30 @@ namespace SV_Crop_Calendar
 
             // Set picture to selected crop in the crop CMB
             var cropName = cropCLB.SelectedItem as String;
-            if (cropName == null) 
-            { 
-                crop.Image = null; 
-            } 
+            if (cropName == null)
+            {
+                crop.Image = null;
+            }
             else
             {
                 crop.Image = Image.FromFile("../" + cropName + ".png");
+                cropCLB.SetItemChecked(cropCLB.SelectedIndex, true);
             }
-            
+
 
             // Add picture box index to list of indices for that crop
-            Console.WriteLine(cropPanel.Controls.Find(crop.Name, false)[0].Name);
+            cropPlots[cropCLB.SelectedIndex].Add(crop);
+        }
+
+        // Clears crop grid of every instance of an unchecked crop
+        private void clearCropGrid(int crop)
+        {
+            foreach (PictureBox plot in cropPlots[crop])
+            {
+                plot.Image = null;
+            }
+
+            cropPlots[crop].Clear();
         }
     }
     public class State

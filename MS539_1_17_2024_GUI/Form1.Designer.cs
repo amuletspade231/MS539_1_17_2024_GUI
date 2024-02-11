@@ -118,6 +118,7 @@
             this.cropCLB.Name = "cropCLB";
             this.cropCLB.Size = new System.Drawing.Size(170, 76);
             this.cropCLB.TabIndex = 1;
+            this.cropCLB.ItemCheck += this.cropCLB_ItemCheck;
             // 
             // noneRB
             // 
@@ -314,7 +315,7 @@
             // 
             // randomBtn
             // 
-            this.randomBtn.Location = new System.Drawing.Point(275, 183);
+            this.randomBtn.Location = new System.Drawing.Point(275, 157);
             this.randomBtn.Name = "randomBtn";
             this.randomBtn.Size = new System.Drawing.Size(75, 23);
             this.randomBtn.TabIndex = 19;

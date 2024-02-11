@@ -20,4 +20,14 @@ I took a lot longer than I thought because I spent time on an error that didn't 
 I also found out I had to redo how my program worked to fit my new features and that took some time as well.
 Next time I want to include time for refactoring and such.
 
+------------------------------------
+
 Work Estimation: 3 hours
+
+2/8 - 1.5 hrs
+2/11 - 1 hr
+
+Most of my time was taken figuring out what to do to include the assignment objectives,
+but I'm glad I was able to complete everything within my estimates.
+If anything, as I was doing this assignment, I found more things to implement that I have to leave for the next increment.
+I'm excited to try to implement calulated growth cycles and adding them to a 28 length array.
