@@ -23,7 +23,7 @@ namespace SV_Crop_Calendar
         // List of lists of dates to store the harvest dates of each crop
         private List<List<DateTime>> cropHarvestDates = Enumerable.Range(0, 4).Select(i => new List<DateTime>()).ToList();
         // List of indices to store grid plots of each crop
-        private List<List<PictureBox>> cropPlots = Enumerable.Range(0, 4).Select(i => new List<PictureBox>()).ToList();
+        private string[] cropPlots = new string[15];
 
         public Form1()
         {
@@ -70,7 +70,7 @@ namespace SV_Crop_Calendar
             else
             {
                 cropStatusPanel.Controls[crop].Text = "Not planted";
-                clearCropGrid(crop);
+                clearCropGrid(cropCLB.Items[crop] as String);
             }
         }
 
@@ -268,6 +268,7 @@ namespace SV_Crop_Calendar
             {
                 growthIndex = growthIndex,
                 cropHarvestDates = cropHarvestDates,
+                cropPlots = cropPlots,
                 selectedCrops = cropCLB.CheckedIndices.Cast<int>().ToList()
             });
 
@@ -303,6 +304,15 @@ namespace SV_Crop_Calendar
                     cropCLB.SetItemChecked(index, true);
                 }
 
+                // load crop grid
+                int i = 0;
+                foreach (PictureBox plot in cropPanel.Controls)
+                {
+                    plot.ImageLocation = state[0].cropPlots[i];
+
+                    i++;
+                }
+
             };
         }
 
@@ -334,41 +344,46 @@ namespace SV_Crop_Calendar
         private void crop_Click(object sender, EventArgs e)
         {
             // Get clicked picture box
-            PictureBox crop = sender as PictureBox;
-            if (crop == null) { return; }
+            PictureBox plot = sender as PictureBox;
+            if (plot == null) { return; }
 
             // Set picture to selected crop in the crop CMB
             var cropName = cropCLB.SelectedItem as String;
             if (cropName == null)
             {
-                crop.Image = null;
+                plot.Image = null;
             }
             else
             {
-                crop.Image = Image.FromFile("../" + cropName + ".png");
+                plot.ImageLocation = "../" + cropName + ".png";
                 cropCLB.SetItemChecked(cropCLB.SelectedIndex, true);
+                // Store image location
+                cropPlots[cropPanel.Controls.IndexOf(plot)] = plot.ImageLocation;
             }
 
-
-            // Add picture box index to list of indices for that crop
-            cropPlots[cropCLB.SelectedIndex].Add(crop);
         }
 
         // Clears crop grid of every instance of an unchecked crop
-        private void clearCropGrid(int crop)
+        private void clearCropGrid(string crop)
         {
-            foreach (PictureBox plot in cropPlots[crop])
+            int i = 0;
+            foreach (PictureBox plot in cropPanel.Controls)
             {
-                plot.Image = null;
-            }
+                if (plot.ImageLocation != null && plot.ImageLocation.Contains(crop))
+                {
+                    plot.ImageLocation = null;
+                }
+                cropPlots[i] = String.Empty;
 
-            cropPlots[crop].Clear();
+                i++;
+            }
         }
     }
     public class State
     {
         public double growthIndex { get; set; }
         public List<List<DateTime>> cropHarvestDates { get; set; }
+        public string[] cropPlots { get; set; }
         public List<int> selectedCrops { get; set; }
     }
 }
