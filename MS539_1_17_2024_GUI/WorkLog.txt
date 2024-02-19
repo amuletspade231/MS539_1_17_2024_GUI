@@ -27,7 +27,22 @@ Work Estimation: 3 hours
 2/8 - 1.5 hrs
 2/11 - 1 hr
 
+total: 2.5 hrs
+
 Most of my time was taken figuring out what to do to include the assignment objectives,
 but I'm glad I was able to complete everything within my estimates.
 If anything, as I was doing this assignment, I found more things to implement that I have to leave for the next increment.
 I'm excited to try to implement calulated growth cycles and adding them to a 28 length array.
+
+------------------------------------
+
+Work Estimation: 4 hours
+
+2/3 - 1 hr
+2/15 - 1 hr
+
+total: 2 hrs
+
+I was originally going to reimplement a lot of things so I alotted myself a lot of time,
+but while I was implementing I figured out a more simple solution that was faster to implement and saved a lot of time.
+This gave me time to brainstorm for the next assignment, so now I have a solid plan in mind.
