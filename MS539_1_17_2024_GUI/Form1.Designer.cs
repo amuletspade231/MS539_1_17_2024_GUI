@@ -28,6 +28,7 @@ namespace SV_Crop_Calendar
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.seasonCalendar = new System.Windows.Forms.MonthCalendar();
             this.cropCLB = new System.Windows.Forms.CheckedListBox();
@@ -67,6 +68,11 @@ namespace SV_Crop_Calendar
             this.seasonMenuStrip = new System.Windows.Forms.MenuStrip();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.springToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cropPanelLabel = new System.Windows.Forms.Label();
+            this.boldDateTPLabel = new System.Windows.Forms.Label();
+            this.boldDateTP = new System.Windows.Forms.ToolTip(this.components);
+            this.saveTPLabel = new System.Windows.Forms.Label();
+            this.saveTP = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.parsnipPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.strawberryPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cauliflowerPB)).BeginInit();
@@ -118,7 +124,8 @@ namespace SV_Crop_Calendar
             this.cropCLB.Name = "cropCLB";
             this.cropCLB.Size = new System.Drawing.Size(170, 76);
             this.cropCLB.TabIndex = 1;
-            this.cropCLB.ItemCheck += this.cropCLB_ItemCheck;
+            this.cropCLB.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.cropCLB_ItemCheck);
+            this.cropCLB.SelectedIndexChanged += new System.EventHandler(this.cropCLB_SelectedIndexChanged);
             // 
             // noneRB
             // 
@@ -194,7 +201,7 @@ namespace SV_Crop_Calendar
             // 
             this.parsnipPB.Image = ((System.Drawing.Image)(resources.GetObject("parsnipPB.Image")));
             this.parsnipPB.InitialImage = ((System.Drawing.Image)(resources.GetObject("parsnipPB.InitialImage")));
-            this.parsnipPB.Location = new System.Drawing.Point(84, 277);
+            this.parsnipPB.Location = new System.Drawing.Point(20, 277);
             this.parsnipPB.Name = "parsnipPB";
             this.parsnipPB.Size = new System.Drawing.Size(47, 50);
             this.parsnipPB.TabIndex = 8;
@@ -203,7 +210,7 @@ namespace SV_Crop_Calendar
             // strawberryPB
             // 
             this.strawberryPB.Image = ((System.Drawing.Image)(resources.GetObject("strawberryPB.Image")));
-            this.strawberryPB.Location = new System.Drawing.Point(241, 277);
+            this.strawberryPB.Location = new System.Drawing.Point(220, 277);
             this.strawberryPB.Name = "strawberryPB";
             this.strawberryPB.Size = new System.Drawing.Size(49, 50);
             this.strawberryPB.TabIndex = 9;
@@ -212,7 +219,7 @@ namespace SV_Crop_Calendar
             // cauliflowerPB
             // 
             this.cauliflowerPB.Image = ((System.Drawing.Image)(resources.GetObject("cauliflowerPB.Image")));
-            this.cauliflowerPB.Location = new System.Drawing.Point(401, 277);
+            this.cauliflowerPB.Location = new System.Drawing.Point(420, 277);
             this.cauliflowerPB.Name = "cauliflowerPB";
             this.cauliflowerPB.Size = new System.Drawing.Size(50, 50);
             this.cauliflowerPB.TabIndex = 10;
@@ -221,7 +228,7 @@ namespace SV_Crop_Calendar
             // tulipPB
             // 
             this.tulipPB.Image = ((System.Drawing.Image)(resources.GetObject("tulipPB.Image")));
-            this.tulipPB.Location = new System.Drawing.Point(566, 277);
+            this.tulipPB.Location = new System.Drawing.Point(620, 277);
             this.tulipPB.Name = "tulipPB";
             this.tulipPB.Size = new System.Drawing.Size(51, 50);
             this.tulipPB.TabIndex = 11;
@@ -251,7 +258,7 @@ namespace SV_Crop_Calendar
             // 
             this.strawberryStatusLabel.AutoSize = true;
             this.strawberryStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.strawberryStatusLabel.Location = new System.Drawing.Point(173, 0);
+            this.strawberryStatusLabel.Location = new System.Drawing.Point(216, 0);
             this.strawberryStatusLabel.Name = "strawberryStatusLabel";
             this.strawberryStatusLabel.Size = new System.Drawing.Size(91, 20);
             this.strawberryStatusLabel.TabIndex = 14;
@@ -261,7 +268,7 @@ namespace SV_Crop_Calendar
             // 
             this.cauliflowerStatusLabel.AutoSize = true;
             this.cauliflowerStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cauliflowerStatusLabel.Location = new System.Drawing.Point(333, 0);
+            this.cauliflowerStatusLabel.Location = new System.Drawing.Point(416, 0);
             this.cauliflowerStatusLabel.Name = "cauliflowerStatusLabel";
             this.cauliflowerStatusLabel.Size = new System.Drawing.Size(91, 20);
             this.cauliflowerStatusLabel.TabIndex = 15;
@@ -271,7 +278,7 @@ namespace SV_Crop_Calendar
             // 
             this.tulipStatusLabel.AutoSize = true;
             this.tulipStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tulipStatusLabel.Location = new System.Drawing.Point(498, 0);
+            this.tulipStatusLabel.Location = new System.Drawing.Point(616, 0);
             this.tulipStatusLabel.Name = "tulipStatusLabel";
             this.tulipStatusLabel.Size = new System.Drawing.Size(91, 20);
             this.tulipStatusLabel.TabIndex = 16;
@@ -283,9 +290,9 @@ namespace SV_Crop_Calendar
             this.cropStatusPanel.Controls.Add(this.strawberryStatusLabel);
             this.cropStatusPanel.Controls.Add(this.cauliflowerStatusLabel);
             this.cropStatusPanel.Controls.Add(this.tulipStatusLabel);
-            this.cropStatusPanel.Location = new System.Drawing.Point(64, 333);
+            this.cropStatusPanel.Location = new System.Drawing.Point(0, 333);
             this.cropStatusPanel.Name = "cropStatusPanel";
-            this.cropStatusPanel.Size = new System.Drawing.Size(630, 30);
+            this.cropStatusPanel.Size = new System.Drawing.Size(819, 30);
             this.cropStatusPanel.TabIndex = 17;
             // 
             // randomBtn
@@ -465,7 +472,7 @@ namespace SV_Crop_Calendar
             this.cropPanel.Controls.Add(this.crop10);
             this.cropPanel.Controls.Add(this.crop5);
             this.cropPanel.Controls.Add(this.crop0);
-            this.cropPanel.Location = new System.Drawing.Point(223, 383);
+            this.cropPanel.Location = new System.Drawing.Point(224, 424);
             this.cropPanel.Name = "cropPanel";
             this.cropPanel.Size = new System.Drawing.Size(296, 180);
             this.cropPanel.TabIndex = 35;
@@ -477,7 +484,7 @@ namespace SV_Crop_Calendar
             this.springToolStripMenuItem});
             this.seasonMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.seasonMenuStrip.Name = "seasonMenuStrip";
-            this.seasonMenuStrip.Size = new System.Drawing.Size(748, 24);
+            this.seasonMenuStrip.Size = new System.Drawing.Size(824, 24);
             this.seasonMenuStrip.TabIndex = 36;
             this.seasonMenuStrip.Text = "seasonMenuStrip";
             // 
@@ -495,12 +502,50 @@ namespace SV_Crop_Calendar
             this.springToolStripMenuItem.Text = "Spring";
             this.springToolStripMenuItem.Click += new System.EventHandler(this.springToolStripMenuItem_Click);
             // 
+            // cropPanelLabel
+            // 
+            this.cropPanelLabel.AutoSize = true;
+            this.cropPanelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cropPanelLabel.Location = new System.Drawing.Point(220, 381);
+            this.cropPanelLabel.MaximumSize = new System.Drawing.Size(435, 0);
+            this.cropPanelLabel.Name = "cropPanelLabel";
+            this.cropPanelLabel.Size = new System.Drawing.Size(433, 40);
+            this.cropPanelLabel.TabIndex = 37;
+            this.cropPanelLabel.Text = "Highlight a crop from the checklist then click a plot to plant it! Uncheck a crop" +
+    " to delete it from its plots.";
+            // 
+            // boldDateTPLabel
+            // 
+            this.boldDateTPLabel.AutoSize = true;
+            this.boldDateTPLabel.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.boldDateTPLabel.Location = new System.Drawing.Point(54, 65);
+            this.boldDateTPLabel.Name = "boldDateTPLabel";
+            this.boldDateTPLabel.Size = new System.Drawing.Size(13, 13);
+            this.boldDateTPLabel.TabIndex = 38;
+            this.boldDateTPLabel.Text = "?";
+            this.boldDateTP.SetToolTip(this.boldDateTPLabel, "Select a crop you\'ve checked to bold its harvest dates.");
+            // 
+            // saveTPLabel
+            // 
+            this.saveTPLabel.AutoSize = true;
+            this.saveTPLabel.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.saveTPLabel.Location = new System.Drawing.Point(111, 6);
+            this.saveTPLabel.Name = "saveTPLabel";
+            this.saveTPLabel.Size = new System.Drawing.Size(13, 13);
+            this.saveTPLabel.TabIndex = 39;
+            this.saveTPLabel.Text = "?";
+            this.saveTP.SetToolTip(this.saveTPLabel, "Click \'Save\' to save your session. You can load the most recent save by clicking " +
+        "on \'Spring\'");
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(748, 579);
+            this.ClientSize = new System.Drawing.Size(824, 616);
+            this.Controls.Add(this.saveTPLabel);
+            this.Controls.Add(this.boldDateTPLabel);
+            this.Controls.Add(this.cropPanelLabel);
             this.Controls.Add(this.cropPanel);
             this.Controls.Add(this.randomBtn);
             this.Controls.Add(this.cropStatusPanel);
@@ -589,6 +634,11 @@ namespace SV_Crop_Calendar
         private System.Windows.Forms.MenuStrip seasonMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem springToolStripMenuItem;
+        private System.Windows.Forms.Label cropPanelLabel;
+        private System.Windows.Forms.Label boldDateTPLabel;
+        private System.Windows.Forms.ToolTip boldDateTP;
+        private System.Windows.Forms.Label saveTPLabel;
+        private System.Windows.Forms.ToolTip saveTP;
     }
 }
 

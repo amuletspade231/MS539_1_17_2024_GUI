@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,6 +26,8 @@ namespace SV_Crop_Calendar
         private List<List<DateTime>> cropHarvestDates = Enumerable.Range(0, 4).Select(i => new List<DateTime>()).ToList();
         // List of indices to store grid plots of each crop
         private string[] cropPlots = new string[15];
+
+        private int activeCrop = -1;
 
         public Form1()
         {
@@ -71,6 +75,11 @@ namespace SV_Crop_Calendar
             {
                 cropStatusPanel.Controls[crop].Text = "Not planted";
                 clearCropGrid(cropCLB.Items[crop] as String);
+                if (cropCLB.SelectedIndex == activeCrop)
+                {
+                    seasonCalendar.RemoveAllMonthlyBoldedDates();
+                    seasonCalendar.UpdateBoldedDates();
+                }
             }
         }
 
@@ -99,9 +108,21 @@ namespace SV_Crop_Calendar
             }
             else
             {
-                cropStatusPanel.Controls[crop].Text = "Still growing...";
+                cropStatusPanel.Controls[crop].Text = getNextHarvestDate(crop);
             }
 
+        }
+
+        private string getNextHarvestDate(int crop)
+        {
+            DateTime currDate = seasonCalendar.SelectionRange.Start;
+            if (!cropHarvestDates[crop].SkipWhile(d => d < currDate).ToList().Any())
+            {
+                return "No more harvests.";
+            }
+            DateTime nextDate = cropHarvestDates[crop].SkipWhile(d => d < currDate).OrderBy(t => Math.Abs((t - currDate).Ticks)).First();
+            Double remainingDays = (nextDate - currDate).TotalDays;
+            return remainingDays + " day(s) til next harvest";
         }
 
         private void noneRB_CheckedChanged(object sender, EventArgs e)
@@ -149,6 +170,7 @@ namespace SV_Crop_Calendar
                 }
 
                 growthIndex = 1;
+                updateHarvestDates();
             }
         }
 
@@ -202,6 +224,7 @@ namespace SV_Crop_Calendar
                 }
 
                 growthIndex = 1.1;
+                updateHarvestDates();
             }
         }
 
@@ -257,6 +280,7 @@ namespace SV_Crop_Calendar
                 }
 
                 growthIndex = 1.25;
+                updateHarvestDates();
             }
         }
 
@@ -378,6 +402,27 @@ namespace SV_Crop_Calendar
                 i++;
             }
         }
+
+        private void cropCLB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            activeCrop = cropCLB.SelectedIndex;
+            updateHarvestDates();
+        }
+
+        private void updateHarvestDates()
+        {
+            if (cropCLB.GetItemCheckState(activeCrop) == CheckState.Checked)
+            {
+                Console.WriteLine("add harvest dates");
+                seasonCalendar.RemoveAllMonthlyBoldedDates();
+                foreach (DateTime date in cropHarvestDates[activeCrop])
+                {
+                    seasonCalendar.AddMonthlyBoldedDate(date);
+                }
+                seasonCalendar.UpdateBoldedDates();
+            }
+        }
+
     }
     public class State
     {
