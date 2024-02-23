@@ -288,13 +288,7 @@ namespace SV_Crop_Calendar
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<State> state = new List<State>();
-            state.Add(new State()
-            {
-                growthIndex = growthIndex,
-                cropHarvestDates = cropHarvestDates,
-                cropPlots = cropPlots,
-                selectedCrops = cropCLB.CheckedIndices.Cast<int>().ToList()
-            });
+            state.Add(new State(growthIndex,cropHarvestDates,cropPlots,cropCLB.CheckedIndices.Cast<int>().ToList()));
 
             JsonSerializer serializer = new JsonSerializer();
             string json = JsonConvert.SerializeObject(state.ToArray());
@@ -311,7 +305,7 @@ namespace SV_Crop_Calendar
                 List<State> state = JsonConvert.DeserializeObject<List<State>>(json);
 
                 // load the fertilizer input
-                switch (state[0].growthIndex)
+                switch (state[0].getGrowthIndex())
                 {
                     case 1.1: { speedGroRB.PerformClick(); break; }
                     case 1.25: { deluxeSGRB.PerformClick(); break; }
@@ -323,16 +317,17 @@ namespace SV_Crop_Calendar
                 {
                     cropCLB.SetItemChecked(index, false);
                 }
-                foreach (int index in state[0].selectedCrops)
+                foreach (int index in state[0].getSelectedCrops())
                 {
                     cropCLB.SetItemChecked(index, true);
                 }
 
                 // load crop grid
                 int i = 0;
+                string[] cropPlots = state[0].getCropPlots();
                 foreach (PictureBox plot in cropPanel.Controls)
                 {
-                    plot.ImageLocation = state[0].cropPlots[i];
+                    plot.ImageLocation = cropPlots[i];
 
                     i++;
                 }
@@ -426,9 +421,130 @@ namespace SV_Crop_Calendar
     }
     public class State
     {
-        public double growthIndex { get; set; }
-        public List<List<DateTime>> cropHarvestDates { get; set; }
-        public string[] cropPlots { get; set; }
-        public List<int> selectedCrops { get; set; }
+        private double growthIndex { get; set; }
+        private List<List<DateTime>> cropHarvestDates { get; set; }
+        private string[] cropPlots { get; set; }
+        private List<int> selectedCrops { get; set; }
+
+        //Constructor
+        public State(double growthIndex, List<List<DateTime>> cropHarvestDates, string[] cropPlots, List<int> selectedCrops) 
+        {
+            this.growthIndex = growthIndex;
+            this.cropHarvestDates = cropHarvestDates;
+            this.cropPlots = cropPlots;
+            this.selectedCrops = selectedCrops;
+        }
+
+        // Get functions
+        public double getGrowthIndex() { return growthIndex; }
+        public List<List<DateTime>> getCropHarvestDates() {  return cropHarvestDates; }
+        public string[] getCropPlots() {  return cropPlots; }
+        public List<int> getSelectedCrops() {  return selectedCrops; }
     }
+
+    public class Crop
+    {
+        protected string name;
+        protected string cropImageLoc;
+        protected int growthPeriod;
+        protected List<DateTime> standardCropHarvestDates;
+        protected List<DateTime> speedCropHarvestDates;
+        protected List<DateTime> deluxeCropHarvestDates;
+
+        //Constructor
+        public Crop(string name, string cropImageLoc, int growthPeriod, List<DateTime> standardCropHarvestDates, List<DateTime> speedCropHarvestDates, List<DateTime> deluxeCropHarvestDates)
+        {
+            this.name = name;
+            this.cropImageLoc = cropImageLoc;
+            this.growthPeriod = growthPeriod;
+            this.standardCropHarvestDates = standardCropHarvestDates;
+            this.speedCropHarvestDates = speedCropHarvestDates;
+            this.deluxeCropHarvestDates = deluxeCropHarvestDates;
+        }
+
+        //Get functions
+        public string getName() {  return name; }
+        public string getCropImageLoc() {  return cropImageLoc; }
+        public List<DateTime> getStandardHarvestDates() { return standardCropHarvestDates; }
+        public List<DateTime> getSpeedHarvestDates() { return speedCropHarvestDates; }
+        public List<DateTime> getDeluxeHarvestDates() { return deluxeCropHarvestDates; }
+
+        //Calculate ideal harvest days
+        public List<DateTime> predictHarvestDates (double growthIndex, DateTime startDate)
+        {
+            // calculate growth period based on growth index
+            double growthPeriod = this.growthPeriod * growthIndex;
+            DateTime seasonEnd = new DateTime(2023, 2, 28);
+            List<DateTime> harvestDates = new List<DateTime>();
+
+            // add harvest dates until season ends
+            DateTime harvestDate = startDate.AddDays(growthPeriod);
+            while (harvestDate <= seasonEnd) 
+            { 
+                harvestDates.Add(harvestDate);
+                harvestDate = harvestDate.AddDays(growthPeriod);
+            }
+
+            return harvestDates;
+        }
+
+    }
+
+    public class RegrowingCrop : Crop
+    {
+        protected int regrowthPeriod;
+
+        public RegrowingCrop (int regrowthPeriod, string name, string cropImageLoc, int growthPeriod, List<DateTime> standardCropHarvestDates, List<DateTime> speedCropHarvestDates, List<DateTime> deluxeCropHarvestDates) 
+            : base(name, cropImageLoc, growthPeriod, standardCropHarvestDates, speedCropHarvestDates, deluxeCropHarvestDates)
+        {
+            this.regrowthPeriod = regrowthPeriod;
+        }
+
+        //Calculate ideal harvest days
+        public new List<DateTime> predictHarvestDates(double growthIndex, DateTime startDate)
+        {
+            // calculate growth period based on growth index
+            double growthPeriod = this.growthPeriod * growthIndex;
+            DateTime seasonEnd = new DateTime(2023, 2, 28);
+            List<DateTime> harvestDates = new List<DateTime>();
+
+            // add harvest dates until season ends
+            DateTime harvestDate = startDate.AddDays(growthPeriod);
+            while (harvestDate <= seasonEnd)
+            {
+                harvestDates.Add(harvestDate);
+                harvestDate = harvestDate.AddDays(regrowthPeriod);
+            }
+
+            return harvestDates;
+        }
+    }
+
+    public class BiSeasonCrop : RegrowingCrop
+    {
+
+        public BiSeasonCrop(int regrowthPeriod, string name, string cropImageLoc, int growthPeriod, List<DateTime> standardCropHarvestDates, List<DateTime> speedCropHarvestDates, List<DateTime> deluxeCropHarvestDates) 
+            : base(regrowthPeriod, name, cropImageLoc, growthPeriod, standardCropHarvestDates, speedCropHarvestDates, deluxeCropHarvestDates)
+        {}
+
+        //Calculate ideal harvest days
+        public new List<DateTime> predictHarvestDates(double growthIndex, DateTime startDate)
+        {
+            // calculate growth period based on growth index
+            double growthPeriod = this.growthPeriod * growthIndex;
+            DateTime seasonEnd = new DateTime(2023, 3, 28);
+            List<DateTime> harvestDates = new List<DateTime>();
+
+            // add harvest dates until season ends
+            DateTime harvestDate = startDate.AddDays(growthPeriod);
+            while (harvestDate <= seasonEnd)
+            {
+                harvestDates.Add(harvestDate);
+                harvestDate = harvestDate.AddDays(regrowthPeriod);
+            }
+
+            return harvestDates;
+        }
+    }
+
 }
