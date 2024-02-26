@@ -46,3 +46,15 @@ total: 2 hrs
 I was originally going to reimplement a lot of things so I alotted myself a lot of time,
 but while I was implementing I figured out a more simple solution that was faster to implement and saved a lot of time.
 This gave me time to brainstorm for the next assignment, so now I have a solid plan in mind.
+
+------------------------------------
+
+Work Estimation: 4 hours
+
+2/23 - 1 hr
+2/24 - 1 hr
+2/25 - 2 hr
+
+total: 4 hrs
+
+I knew re-implementing everything to comply with OOP was going to be a big update so I made sure I allotted myself enough time.
