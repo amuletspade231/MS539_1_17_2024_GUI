@@ -48,7 +48,7 @@ namespace SV_Crop_Calendar
             this.cauliflowerStatusLabel = new System.Windows.Forms.Label();
             this.tulipStatusLabel = new System.Windows.Forms.Label();
             this.cropStatusPanel = new System.Windows.Forms.Panel();
-            this.randomBtn = new System.Windows.Forms.Button();
+            this.analysisFrmBtn = new System.Windows.Forms.Button();
             this.crop0 = new System.Windows.Forms.PictureBox();
             this.crop5 = new System.Windows.Forms.PictureBox();
             this.crop10 = new System.Windows.Forms.PictureBox();
@@ -201,16 +201,16 @@ namespace SV_Crop_Calendar
             // 
             this.parsnipPB.Image = ((System.Drawing.Image)(resources.GetObject("parsnipPB.Image")));
             this.parsnipPB.InitialImage = ((System.Drawing.Image)(resources.GetObject("parsnipPB.InitialImage")));
-            this.parsnipPB.Location = new System.Drawing.Point(20, 277);
+            this.parsnipPB.Location = new System.Drawing.Point(19, 275);
             this.parsnipPB.Name = "parsnipPB";
-            this.parsnipPB.Size = new System.Drawing.Size(47, 50);
+            this.parsnipPB.Size = new System.Drawing.Size(51, 50);
             this.parsnipPB.TabIndex = 8;
             this.parsnipPB.TabStop = false;
             // 
             // strawberryPB
             // 
             this.strawberryPB.Image = ((System.Drawing.Image)(resources.GetObject("strawberryPB.Image")));
-            this.strawberryPB.Location = new System.Drawing.Point(220, 277);
+            this.strawberryPB.Location = new System.Drawing.Point(21, 331);
             this.strawberryPB.Name = "strawberryPB";
             this.strawberryPB.Size = new System.Drawing.Size(49, 50);
             this.strawberryPB.TabIndex = 9;
@@ -219,7 +219,7 @@ namespace SV_Crop_Calendar
             // cauliflowerPB
             // 
             this.cauliflowerPB.Image = ((System.Drawing.Image)(resources.GetObject("cauliflowerPB.Image")));
-            this.cauliflowerPB.Location = new System.Drawing.Point(420, 277);
+            this.cauliflowerPB.Location = new System.Drawing.Point(20, 388);
             this.cauliflowerPB.Name = "cauliflowerPB";
             this.cauliflowerPB.Size = new System.Drawing.Size(50, 50);
             this.cauliflowerPB.TabIndex = 10;
@@ -228,7 +228,7 @@ namespace SV_Crop_Calendar
             // tulipPB
             // 
             this.tulipPB.Image = ((System.Drawing.Image)(resources.GetObject("tulipPB.Image")));
-            this.tulipPB.Location = new System.Drawing.Point(620, 277);
+            this.tulipPB.Location = new System.Drawing.Point(19, 444);
             this.tulipPB.Name = "tulipPB";
             this.tulipPB.Size = new System.Drawing.Size(51, 50);
             this.tulipPB.TabIndex = 11;
@@ -238,7 +238,7 @@ namespace SV_Crop_Calendar
             // 
             this.CropStatusLabel.AutoSize = true;
             this.CropStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CropStatusLabel.Location = new System.Drawing.Point(292, 229);
+            this.CropStatusLabel.Location = new System.Drawing.Point(17, 235);
             this.CropStatusLabel.Name = "CropStatusLabel";
             this.CropStatusLabel.Size = new System.Drawing.Size(106, 24);
             this.CropStatusLabel.TabIndex = 12;
@@ -248,41 +248,45 @@ namespace SV_Crop_Calendar
             // 
             this.parsnipStatusLabel.AutoSize = true;
             this.parsnipStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.parsnipStatusLabel.Location = new System.Drawing.Point(16, 0);
+            this.parsnipStatusLabel.Location = new System.Drawing.Point(3, 16);
             this.parsnipStatusLabel.Name = "parsnipStatusLabel";
             this.parsnipStatusLabel.Size = new System.Drawing.Size(91, 20);
             this.parsnipStatusLabel.TabIndex = 13;
             this.parsnipStatusLabel.Text = "Not planted";
+            this.parsnipStatusLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // strawberryStatusLabel
             // 
             this.strawberryStatusLabel.AutoSize = true;
             this.strawberryStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.strawberryStatusLabel.Location = new System.Drawing.Point(216, 0);
+            this.strawberryStatusLabel.Location = new System.Drawing.Point(3, 76);
             this.strawberryStatusLabel.Name = "strawberryStatusLabel";
             this.strawberryStatusLabel.Size = new System.Drawing.Size(91, 20);
             this.strawberryStatusLabel.TabIndex = 14;
             this.strawberryStatusLabel.Text = "Not planted";
+            this.strawberryStatusLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // cauliflowerStatusLabel
             // 
             this.cauliflowerStatusLabel.AutoSize = true;
             this.cauliflowerStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cauliflowerStatusLabel.Location = new System.Drawing.Point(416, 0);
+            this.cauliflowerStatusLabel.Location = new System.Drawing.Point(3, 132);
             this.cauliflowerStatusLabel.Name = "cauliflowerStatusLabel";
             this.cauliflowerStatusLabel.Size = new System.Drawing.Size(91, 20);
             this.cauliflowerStatusLabel.TabIndex = 15;
             this.cauliflowerStatusLabel.Text = "Not planted";
+            this.cauliflowerStatusLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // tulipStatusLabel
             // 
             this.tulipStatusLabel.AutoSize = true;
             this.tulipStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tulipStatusLabel.Location = new System.Drawing.Point(616, 0);
+            this.tulipStatusLabel.Location = new System.Drawing.Point(3, 188);
             this.tulipStatusLabel.Name = "tulipStatusLabel";
             this.tulipStatusLabel.Size = new System.Drawing.Size(91, 20);
             this.tulipStatusLabel.TabIndex = 16;
             this.tulipStatusLabel.Text = "Not planted";
+            this.tulipStatusLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // cropStatusPanel
             // 
@@ -290,20 +294,21 @@ namespace SV_Crop_Calendar
             this.cropStatusPanel.Controls.Add(this.strawberryStatusLabel);
             this.cropStatusPanel.Controls.Add(this.cauliflowerStatusLabel);
             this.cropStatusPanel.Controls.Add(this.tulipStatusLabel);
-            this.cropStatusPanel.Location = new System.Drawing.Point(0, 333);
+            this.cropStatusPanel.Location = new System.Drawing.Point(76, 275);
             this.cropStatusPanel.Name = "cropStatusPanel";
-            this.cropStatusPanel.Size = new System.Drawing.Size(819, 30);
+            this.cropStatusPanel.Size = new System.Drawing.Size(219, 219);
             this.cropStatusPanel.TabIndex = 17;
             // 
-            // randomBtn
+            // analysisFrmBtn
             // 
-            this.randomBtn.Location = new System.Drawing.Point(275, 185);
-            this.randomBtn.Name = "randomBtn";
-            this.randomBtn.Size = new System.Drawing.Size(75, 23);
-            this.randomBtn.TabIndex = 19;
-            this.randomBtn.Text = "Random";
-            this.randomBtn.UseVisualStyleBackColor = true;
-            this.randomBtn.Click += new System.EventHandler(this.randomBtn_Click);
+            this.analysisFrmBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.analysisFrmBtn.Location = new System.Drawing.Point(648, 444);
+            this.analysisFrmBtn.Name = "analysisFrmBtn";
+            this.analysisFrmBtn.Size = new System.Drawing.Size(120, 39);
+            this.analysisFrmBtn.TabIndex = 19;
+            this.analysisFrmBtn.Text = "Farm Analysis";
+            this.analysisFrmBtn.UseVisualStyleBackColor = true;
+            this.analysisFrmBtn.Click += new System.EventHandler(this.analysisFrmBtn_Click);
             // 
             // crop0
             // 
@@ -338,7 +343,7 @@ namespace SV_Crop_Calendar
             // crop1
             // 
             this.crop1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.crop1.Location = new System.Drawing.Point(66, 7);
+            this.crop1.Location = new System.Drawing.Point(65, 7);
             this.crop1.Name = "crop1";
             this.crop1.Size = new System.Drawing.Size(50, 50);
             this.crop1.TabIndex = 23;
@@ -472,7 +477,7 @@ namespace SV_Crop_Calendar
             this.cropPanel.Controls.Add(this.crop10);
             this.cropPanel.Controls.Add(this.crop5);
             this.cropPanel.Controls.Add(this.crop0);
-            this.cropPanel.Location = new System.Drawing.Point(224, 424);
+            this.cropPanel.Location = new System.Drawing.Point(301, 314);
             this.cropPanel.Name = "cropPanel";
             this.cropPanel.Size = new System.Drawing.Size(296, 180);
             this.cropPanel.TabIndex = 35;
@@ -506,7 +511,7 @@ namespace SV_Crop_Calendar
             // 
             this.cropPanelLabel.AutoSize = true;
             this.cropPanelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cropPanelLabel.Location = new System.Drawing.Point(220, 381);
+            this.cropPanelLabel.Location = new System.Drawing.Point(297, 271);
             this.cropPanelLabel.MaximumSize = new System.Drawing.Size(435, 0);
             this.cropPanelLabel.Name = "cropPanelLabel";
             this.cropPanelLabel.Size = new System.Drawing.Size(433, 40);
@@ -542,17 +547,17 @@ namespace SV_Crop_Calendar
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.ClientSize = new System.Drawing.Size(824, 616);
+            this.ClientSize = new System.Drawing.Size(824, 518);
             this.Controls.Add(this.saveTPLabel);
             this.Controls.Add(this.boldDateTPLabel);
             this.Controls.Add(this.cropPanelLabel);
             this.Controls.Add(this.cropPanel);
-            this.Controls.Add(this.randomBtn);
+            this.Controls.Add(this.strawberryPB);
+            this.Controls.Add(this.analysisFrmBtn);
             this.Controls.Add(this.cropStatusPanel);
             this.Controls.Add(this.CropStatusLabel);
             this.Controls.Add(this.tulipPB);
             this.Controls.Add(this.cauliflowerPB);
-            this.Controls.Add(this.strawberryPB);
             this.Controls.Add(this.parsnipPB);
             this.Controls.Add(this.SGRBLabel);
             this.Controls.Add(this.cropCLBLabel);
@@ -614,7 +619,7 @@ namespace SV_Crop_Calendar
         private System.Windows.Forms.Label cauliflowerStatusLabel;
         private System.Windows.Forms.Label tulipStatusLabel;
         private System.Windows.Forms.Panel cropStatusPanel;
-        private System.Windows.Forms.Button randomBtn;
+        private System.Windows.Forms.Button analysisFrmBtn;
         private System.Windows.Forms.PictureBox crop0;
         private System.Windows.Forms.PictureBox crop5;
         private System.Windows.Forms.PictureBox crop10;

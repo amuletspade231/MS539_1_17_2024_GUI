@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using MS539_1_17_2024_GUI;
 using Newtonsoft.Json;
 
 
@@ -22,53 +23,165 @@ namespace SV_Crop_Calendar
     {
         // This dictates how fast the crops will grow which affects the harvest dates
         private double growthIndex = 1;
-        // List of lists of dates to store the harvest dates of each crop
-        private List<List<DateTime>> cropHarvestDates = Enumerable.Range(0, 4).Select(i => new List<DateTime>()).ToList();
+        // List of crops
+        private List<Crop> crops = new List<Crop>();
         // List of indices to store grid plots of each crop
         private string[] cropPlots = new string[15];
-
+        // crop whose harvest dates are currently displayed
         private int activeCrop = -1;
 
         public Form1()
         {
-            // Harvest dates are hard coded due to time
-            // Parsnip harvest dates
-            cropHarvestDates[0].Add(new DateTime(2023, 2, 5));
-            cropHarvestDates[0].Add(new DateTime(2023, 2, 9));
-            cropHarvestDates[0].Add(new DateTime(2023, 2, 13));
-            cropHarvestDates[0].Add(new DateTime(2023, 2, 17));
-            cropHarvestDates[0].Add(new DateTime(2023, 2, 21));
-            cropHarvestDates[0].Add(new DateTime(2023, 2, 25));
+            // default harvest dates
+            List<DateTime> parsnipHarvestDates = new List<DateTime>();
+            parsnipHarvestDates.Add(new DateTime(2023, 2, 5));
+            parsnipHarvestDates.Add(new DateTime(2023, 2, 9));
+            parsnipHarvestDates.Add(new DateTime(2023, 2, 13));
+            parsnipHarvestDates.Add(new DateTime(2023, 2, 17));
+            parsnipHarvestDates.Add(new DateTime(2023, 2, 21));
+            parsnipHarvestDates.Add(new DateTime(2023, 2, 25));
+            //speed gro harvest dates
+            List<DateTime> parsnipSpeedHarvestDates = new List<DateTime>();
+            parsnipSpeedHarvestDates.Add(new DateTime(2023, 2, 4));
+            parsnipSpeedHarvestDates.Add(new DateTime(2023, 2, 7));
+            parsnipSpeedHarvestDates.Add(new DateTime(2023, 2, 10));
+            parsnipSpeedHarvestDates.Add(new DateTime(2023, 2, 13));
+            parsnipSpeedHarvestDates.Add(new DateTime(2023, 2, 16));
+            parsnipSpeedHarvestDates.Add(new DateTime(2023, 2, 19));
+            parsnipSpeedHarvestDates.Add(new DateTime(2023, 2, 22));
+            parsnipSpeedHarvestDates.Add(new DateTime(2023, 2, 25));
+            parsnipSpeedHarvestDates.Add(new DateTime(2023, 2, 28));
+            // deluxe speed gro harvest dates
+            List<DateTime> parsnipDeluxeHarvestDates = new List<DateTime>();
+            parsnipDeluxeHarvestDates.Add(new DateTime(2023, 2, 4));
+            parsnipDeluxeHarvestDates.Add(new DateTime(2023, 2, 7));
+            parsnipDeluxeHarvestDates.Add(new DateTime(2023, 2, 10));
+            parsnipDeluxeHarvestDates.Add(new DateTime(2023, 2, 13));
+            parsnipDeluxeHarvestDates.Add(new DateTime(2023, 2, 16));
+            parsnipDeluxeHarvestDates.Add(new DateTime(2023, 2, 19));
+            parsnipDeluxeHarvestDates.Add(new DateTime(2023, 2, 22));
+            parsnipDeluxeHarvestDates.Add(new DateTime(2023, 2, 25));
+            parsnipDeluxeHarvestDates.Add(new DateTime(2023, 2, 28));
 
-            // Strawberry harvest dates
-            cropHarvestDates[1].Add(new DateTime(2023, 2, 9));
-            cropHarvestDates[1].Add(new DateTime(2023, 2, 13));
-            cropHarvestDates[1].Add(new DateTime(2023, 2, 17));
-            cropHarvestDates[1].Add(new DateTime(2023, 2, 21));
-            cropHarvestDates[1].Add(new DateTime(2023, 2, 25));
+            crops.Add(new Crop("Parsnip", "../Parnsip.png", 1, parsnipHarvestDates, parsnipSpeedHarvestDates, parsnipDeluxeHarvestDates));
 
-            // Cauliflower harvest dates
-            cropHarvestDates[2].Add(new DateTime(2023, 2, 13));
-            cropHarvestDates[2].Add(new DateTime(2023, 2, 25));
+            // default harvest dates
+            List<DateTime> strawberryHarvestDates = new List<DateTime>();
+            strawberryHarvestDates.Add(new DateTime(2023, 2, 9));
+            strawberryHarvestDates.Add(new DateTime(2023, 2, 13));
+            strawberryHarvestDates.Add(new DateTime(2023, 2, 17));
+            strawberryHarvestDates.Add(new DateTime(2023, 2, 21));
+            strawberryHarvestDates.Add(new DateTime(2023, 2, 25));
+            //speed gro harvest dates
+            List<DateTime> strawberrySpeedHarvestDates = new List<DateTime>();
+            strawberrySpeedHarvestDates.Add(new DateTime(2023, 2, 8));
+            strawberrySpeedHarvestDates.Add(new DateTime(2023, 2, 12));
+            strawberrySpeedHarvestDates.Add(new DateTime(2023, 2, 16));
+            strawberrySpeedHarvestDates.Add(new DateTime(2023, 2, 20));
+            strawberrySpeedHarvestDates.Add(new DateTime(2023, 2, 24));
+            strawberrySpeedHarvestDates.Add(new DateTime(2023, 2, 28));
+            // deluxe speed gro harvest dates
+            List<DateTime> strawberryDeluxeHarvestDates = new List<DateTime>();
+            strawberryDeluxeHarvestDates.Add(new DateTime(2023, 2, 7));
+            strawberryDeluxeHarvestDates.Add(new DateTime(2023, 2, 11));
+            strawberryDeluxeHarvestDates.Add(new DateTime(2023, 2, 15));
+            strawberryDeluxeHarvestDates.Add(new DateTime(2023, 2, 19));
+            strawberryDeluxeHarvestDates.Add(new DateTime(2023, 2, 23));
+            strawberryDeluxeHarvestDates.Add(new DateTime(2023, 2, 27));
 
-            // Tuilp harvest dates
-            cropHarvestDates[3].Add(new DateTime(2023, 2, 7));
-            cropHarvestDates[3].Add(new DateTime(2023, 2, 13));
-            cropHarvestDates[3].Add(new DateTime(2023, 2, 19));
-            cropHarvestDates[3].Add(new DateTime(2023, 2, 24));
+            crops.Add(new Crop("Strawberry", "../Strawberry.png", 1, strawberryHarvestDates, strawberrySpeedHarvestDates, strawberryDeluxeHarvestDates));
+
+            // default harvest dates
+            List<DateTime> cauliflowerHarvestDates = new List<DateTime>();
+            cauliflowerHarvestDates.Add(new DateTime(2023, 2, 13));
+            cauliflowerHarvestDates.Add(new DateTime(2023, 2, 25));
+            //speed gro harvest dates
+            List<DateTime> cauliflowerSpeedHarvestDates = new List<DateTime>();
+            cauliflowerSpeedHarvestDates.Add(new DateTime(2023, 2, 11));
+            cauliflowerSpeedHarvestDates.Add(new DateTime(2023, 2, 21));
+            // deluxe speed gro harvest dates
+            List<DateTime> cauliflowerDeluxeHarvestDates = new List<DateTime>();
+            cauliflowerDeluxeHarvestDates.Add(new DateTime(2023, 2, 10));
+            cauliflowerDeluxeHarvestDates.Add(new DateTime(2023, 2, 19));
+            cauliflowerDeluxeHarvestDates.Add(new DateTime(2023, 2, 28));
+
+            crops.Add(new Crop("Cauliflower", "../Cauliflower.png", 1, cauliflowerHarvestDates, cauliflowerSpeedHarvestDates, cauliflowerDeluxeHarvestDates));
+
+            // default harvest dates
+            List<DateTime> tuilpHarvestDates = new List<DateTime>();
+            tuilpHarvestDates.Add(new DateTime(2023, 2, 7));
+            tuilpHarvestDates.Add(new DateTime(2023, 2, 13));
+            tuilpHarvestDates.Add(new DateTime(2023, 2, 19));
+            tuilpHarvestDates.Add(new DateTime(2023, 2, 24));
+            //speed gro harvest dates
+            List<DateTime> tuilpSpeedHarvestDates = new List<DateTime>();
+            tuilpSpeedHarvestDates.Add(new DateTime(2023, 2, 6));
+            tuilpSpeedHarvestDates.Add(new DateTime(2023, 2, 11));
+            tuilpSpeedHarvestDates.Add(new DateTime(2023, 2, 16));
+            tuilpSpeedHarvestDates.Add(new DateTime(2023, 2, 21));
+            tuilpSpeedHarvestDates.Add(new DateTime(2023, 2, 26));
+            // deluxe speed gro harvest dates
+            List<DateTime> tuilpDeluxeHarvestDates = new List<DateTime>();
+            tuilpDeluxeHarvestDates.Add(new DateTime(2023, 2, 5));
+            tuilpDeluxeHarvestDates.Add(new DateTime(2023, 2, 9));
+            tuilpDeluxeHarvestDates.Add(new DateTime(2023, 2, 13));
+            tuilpDeluxeHarvestDates.Add(new DateTime(2023, 2, 17));
+            tuilpDeluxeHarvestDates.Add(new DateTime(2023, 2, 21));
+            tuilpDeluxeHarvestDates.Add(new DateTime(2023, 2, 25));
+
+            crops.Add(new Crop("Tulip", "../Tulip.png", 1, tuilpHarvestDates, tuilpSpeedHarvestDates, tuilpDeluxeHarvestDates));
+
+
+            for (int i = 0; i < crops.Count; i++)
+            {
+                    Console.WriteLine(crops[i].getName());
+            }
 
             InitializeComponent();
+        }
+
+        public double getGrowthIndex()
+        {
+            return growthIndex;
+        }
+
+        public List<int> getCropCount()
+        {// Get count of each crop planted
+            List<int> cropCount = Enumerable.Range(0, crops.Count).Select(i => 0).ToList();
+
+            foreach (PictureBox plot in cropPanel.Controls)
+            {
+                if (plot.ImageLocation == null)
+                {
+                    Console.WriteLine("null");
+                    continue;
+                }
+                for (int i = 0; i < crops.Count; i++)
+                {
+                    Console.WriteLine(plot.ImageLocation);
+                    if (plot.ImageLocation.Contains(crops[i].getName()))
+                    {
+                        Console.WriteLine(crops[i].getName());
+                        cropCount[i]++;
+                    }
+                }
+            }
+
+            return cropCount;
+
         }
 
         private void cropCLB_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             // Get the currently selected item in the ListBox.
             int crop = e.Index;
+            cropCLB.SelectedIndex = crop;
 
             //If checked, check if it's ready to harvest
             if (!cropCLB.GetItemChecked(crop))
             {
                 checkHarvestDates(crop);
+                updateHarvestDates();
             }
             // else, set to unplanted 
             else
@@ -101,7 +214,7 @@ namespace SV_Crop_Calendar
         {
             DateTime currDate = seasonCalendar.SelectionRange.Start;
 
-            List<DateTime> harvestDates = cropHarvestDates[crop];
+            List<DateTime> harvestDates = crops[crop].getHarvestDates(growthIndex);
             if (harvestDates.Contains(currDate))
             {
                 cropStatusPanel.Controls[crop].Text = "Ready for harvest!";
@@ -116,11 +229,12 @@ namespace SV_Crop_Calendar
         private string getNextHarvestDate(int crop)
         {
             DateTime currDate = seasonCalendar.SelectionRange.Start;
-            if (!cropHarvestDates[crop].SkipWhile(d => d < currDate).ToList().Any())
+            List <DateTime> harvestDates= crops[crop].getHarvestDates(growthIndex);
+            if (!harvestDates.SkipWhile(d => d < currDate).ToList().Any())
             {
                 return "No more harvests.";
             }
-            DateTime nextDate = cropHarvestDates[crop].SkipWhile(d => d < currDate).OrderBy(t => Math.Abs((t - currDate).Ticks)).First();
+            DateTime nextDate = harvestDates.SkipWhile(d => d < currDate).OrderBy(t => Math.Abs((t - currDate).Ticks)).First();
             Double remainingDays = (nextDate - currDate).TotalDays;
             return remainingDays + " day(s) til next harvest";
         }
@@ -129,36 +243,6 @@ namespace SV_Crop_Calendar
         {
             if (growthIndex != 1)
             {
-                cropHarvestDates[0].Clear();
-                cropHarvestDates[1].Clear();
-                cropHarvestDates[2].Clear();
-                cropHarvestDates[3].Clear();
-
-                // Parsnip harvest dates
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 5));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 9));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 13));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 17));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 21));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 25));
-
-                // Strawberry harvest dates
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 9));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 13));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 17));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 21));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 25));
-
-                // Cauliflower harvest dates
-                cropHarvestDates[2].Add(new DateTime(2023, 2, 13));
-                cropHarvestDates[2].Add(new DateTime(2023, 2, 25));
-
-                // Tuilp harvest dates
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 7));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 13));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 19));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 24));
-
                 // Check selected date for each crop that was checked in the crop checklist
                 foreach (int crop in cropCLB.CheckedIndices)
                 {
@@ -178,41 +262,6 @@ namespace SV_Crop_Calendar
         {
             if (growthIndex != 1.1)
             {
-                cropHarvestDates[0].Clear();
-                cropHarvestDates[1].Clear();
-                cropHarvestDates[2].Clear();
-                cropHarvestDates[3].Clear();
-
-                // Parsnip harvest dates
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 4));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 7));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 10));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 13));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 16));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 19));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 22));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 25));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 28));
-
-                // Strawberry harvest dates
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 8));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 12));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 16));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 20));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 24));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 28));
-
-                // Cauliflower harvest dates
-                cropHarvestDates[2].Add(new DateTime(2023, 2, 11));
-                cropHarvestDates[2].Add(new DateTime(2023, 2, 21));
-
-                // Tuilp harvest dates
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 6));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 11));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 16));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 21));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 26));
-
                 // Check selected date for each crop that was checked in the crop checklist
                 foreach (int crop in cropCLB.CheckedIndices)
                 {
@@ -232,43 +281,6 @@ namespace SV_Crop_Calendar
         {
             if (growthIndex != 1.25)
             {
-                cropHarvestDates[0].Clear();
-                cropHarvestDates[1].Clear();
-                cropHarvestDates[2].Clear();
-                cropHarvestDates[3].Clear();
-
-                // Parsnip harvest dates
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 4));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 7));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 10));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 13));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 16));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 19));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 22));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 25));
-                cropHarvestDates[0].Add(new DateTime(2023, 2, 28));
-
-                // Strawberry harvest dates
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 7));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 11));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 15));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 19));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 23));
-                cropHarvestDates[1].Add(new DateTime(2023, 2, 27));
-
-                // Cauliflower harvest dates
-                cropHarvestDates[2].Add(new DateTime(2023, 2, 10));
-                cropHarvestDates[2].Add(new DateTime(2023, 2, 19));
-                cropHarvestDates[2].Add(new DateTime(2023, 2, 28));
-
-                // Tuilp harvest dates
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 5));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 9));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 13));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 17));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 21));
-                cropHarvestDates[3].Add(new DateTime(2023, 2, 25));
-
                 // Check selected date for each crop that was checked in the crop checklist
                 foreach (int crop in cropCLB.CheckedIndices)
                 {
@@ -288,7 +300,7 @@ namespace SV_Crop_Calendar
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<State> state = new List<State>();
-            state.Add(new State(growthIndex,cropHarvestDates,cropPlots,cropCLB.CheckedIndices.Cast<int>().ToList()));
+            state.Add(new State(growthIndex,cropPlots,cropCLB.CheckedIndices.Cast<int>().ToList()));
 
             JsonSerializer serializer = new JsonSerializer();
             string json = JsonConvert.SerializeObject(state.ToArray());
@@ -335,10 +347,21 @@ namespace SV_Crop_Calendar
             };
         }
 
+/*      -- This feature has been discontinued --
         // Randomize crop and fertilizer selections
         private void randomBtn_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
+
+            // randomize crop selections
+            for (int index = 0; index < cropCLB.Items.Count; index++)
+            {
+                int check = rnd.Next(0, 2);
+                if (check == 0) { cropCLB.SetItemChecked(index, true);
+                    cropCLB.SelectedIndex = cropCLB.CheckedIndices[0];
+                }
+                else { cropCLB.SetItemChecked(index, false); }
+            }
 
             // randomize fertilizer choice
             int fert = rnd.Next(0, 3);
@@ -350,16 +373,8 @@ namespace SV_Crop_Calendar
                 default: { noneRB.PerformClick(); break; };
             }
 
-            // randomize crop selections
-            for (int index = 0; index < cropCLB.Items.Count; index++)
-            {
-                int check = rnd.Next(0, 2);
-                if (check == 0) { cropCLB.SetItemChecked(index, true); }
-                else { cropCLB.SetItemChecked(index, false); }
-            }
-
         }
-
+*/
         private void crop_Click(object sender, EventArgs e)
         {
             // Get clicked picture box
@@ -378,6 +393,8 @@ namespace SV_Crop_Calendar
                 cropCLB.SetItemChecked(cropCLB.SelectedIndex, true);
                 // Store image location
                 cropPlots[cropPanel.Controls.IndexOf(plot)] = plot.ImageLocation;
+                updateHarvestDates();
+                Console.WriteLine(plot.ImageLocation);
             }
 
         }
@@ -410,7 +427,8 @@ namespace SV_Crop_Calendar
             {
                 Console.WriteLine("add harvest dates");
                 seasonCalendar.RemoveAllMonthlyBoldedDates();
-                foreach (DateTime date in cropHarvestDates[activeCrop])
+                List<DateTime> harvestDates = crops[activeCrop].getHarvestDates(growthIndex);
+                foreach (DateTime date in harvestDates)
                 {
                     seasonCalendar.AddMonthlyBoldedDate(date);
                 }
@@ -418,30 +436,33 @@ namespace SV_Crop_Calendar
             }
         }
 
+        private void analysisFrmBtn_Click(object sender, EventArgs e)
+        {
+            AnalysisFrm frm = new AnalysisFrm(this);
+            frm.Show();
+        }
     }
     public class State
     {
         private double growthIndex { get; set; }
-        private List<List<DateTime>> cropHarvestDates { get; set; }
         private string[] cropPlots { get; set; }
         private List<int> selectedCrops { get; set; }
 
         //Constructor
-        public State(double growthIndex, List<List<DateTime>> cropHarvestDates, string[] cropPlots, List<int> selectedCrops) 
+        public State(double growthIndex, string[] cropPlots, List<int> selectedCrops) 
         {
             this.growthIndex = growthIndex;
-            this.cropHarvestDates = cropHarvestDates;
             this.cropPlots = cropPlots;
             this.selectedCrops = selectedCrops;
         }
 
         // Get functions
         public double getGrowthIndex() { return growthIndex; }
-        public List<List<DateTime>> getCropHarvestDates() {  return cropHarvestDates; }
         public string[] getCropPlots() {  return cropPlots; }
         public List<int> getSelectedCrops() {  return selectedCrops; }
     }
 
+    // Generic crop class
     public class Crop
     {
         protected string name;
@@ -465,9 +486,20 @@ namespace SV_Crop_Calendar
         //Get functions
         public string getName() {  return name; }
         public string getCropImageLoc() {  return cropImageLoc; }
-        public List<DateTime> getStandardHarvestDates() { return standardCropHarvestDates; }
-        public List<DateTime> getSpeedHarvestDates() { return speedCropHarvestDates; }
-        public List<DateTime> getDeluxeHarvestDates() { return deluxeCropHarvestDates; }
+        public List<DateTime> getHarvestDates(double growthIndex) 
+        { 
+            switch(growthIndex)
+            {
+                case 1:
+                    return standardCropHarvestDates;
+                case 1.1:
+                    return speedCropHarvestDates;
+                case 1.25:
+                    return deluxeCropHarvestDates;
+                default:
+                    return standardCropHarvestDates;
+            }
+        }
 
         //Calculate ideal harvest days
         public List<DateTime> predictHarvestDates (double growthIndex, DateTime startDate)
@@ -490,6 +522,7 @@ namespace SV_Crop_Calendar
 
     }
 
+    // Crops that are reharvestable and don't need to be replanted
     public class RegrowingCrop : Crop
     {
         protected int regrowthPeriod;
@@ -520,6 +553,7 @@ namespace SV_Crop_Calendar
         }
     }
 
+    // Crops that grow throughout two seasons
     public class BiSeasonCrop : RegrowingCrop
     {
 
